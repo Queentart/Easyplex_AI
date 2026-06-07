@@ -1,0 +1,1 @@
+# 예측 분석(AI Trajectory) 및 전략 조정 API

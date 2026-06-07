@@ -1,0 +1,1 @@
+# 종합 Strategic Reports 생성/조회
