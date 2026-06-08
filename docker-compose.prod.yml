@@ -1,0 +1,112 @@
+# Full-stack, single-host deployment for the DongA AI Lab platform.
+# Brings up the 6 target containers (DOC-01 §3): nginx · api · worker · db ·
+# redis · minio, plus a one-shot minio-init that guarantees the bucket exists.
+#
+# The local-dev compose (backend/docker-compose.yml, infra only) is left intact.
+#
+# Run from the `first/` directory:
+#   cp .env.prod.example .env.prod   # then fill SECRET_KEY / AES_SECRET_KEY
+#   docker compose -f docker-compose.prod.yml --env-file .env.prod up --build
+#
+# Share with teammates by tunnelling the published web port (default 8080):
+#   cloudflared tunnel --url http://localhost:8080
+# That single tunnel URL serves both the UI and /api (same origin).
+
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-dongaai}
+      POSTGRES_USER: ${POSTGRES_USER:-dev}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-dev1234}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-dev} -d ${POSTGRES_DB:-dongaai}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  minio:
+    image: minio/minio:latest
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: ${AWS_ACCESS_KEY_ID:-minioadmin}
+      MINIO_ROOT_PASSWORD: ${AWS_SECRET_ACCESS_KEY:-minioadmin}
+    volumes:
+      - miniodata:/data
+
+  # One-shot: wait for MinIO, then ensure the bucket exists, then exit 0.
+  # (C4 / P1-3 — folded in because uploads 500 without the bucket.)
+  minio-init:
+    image: minio/mc:latest
+    depends_on:
+      - minio
+    entrypoint: >
+      /bin/sh -c "
+      until mc alias set local http://minio:9000 ${AWS_ACCESS_KEY_ID:-minioadmin} ${AWS_SECRET_ACCESS_KEY:-minioadmin}; do
+        echo 'waiting for minio...'; sleep 2;
+      done &&
+      mc mb --ignore-existing local/${AWS_S3_BUCKET:-dongaai}
+      "
+
+  api:
+    build:
+      context: ./backend
+    env_file: .env.prod
+    # These override any localhost values from .env.prod so the api talks to the
+    # in-network service hostnames.
+    environment:
+      DATABASE_URL: postgresql+asyncpg://${POSTGRES_USER:-dev}:${POSTGRES_PASSWORD:-dev1234}@db:5432/${POSTGRES_DB:-dongaai}
+      REDIS_URL: redis://redis:6379/0
+      AWS_ENDPOINT_URL: http://minio:9000
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      minio-init:
+        condition: service_completed_successfully
+    # Apply migrations on boot (C3 / P1-2 — folded in so the schema exists),
+    # then start the API.
+    command: >
+      sh -c "alembic upgrade head &&
+      uvicorn app.main:app --host 0.0.0.0 --port 8000"
+
+  worker:
+    build:
+      context: ./backend
+    env_file: .env.prod
+    environment:
+      DATABASE_URL: postgresql+asyncpg://${POSTGRES_USER:-dev}:${POSTGRES_PASSWORD:-dev1234}@db:5432/${POSTGRES_DB:-dongaai}
+      REDIS_URL: redis://redis:6379/0
+      AWS_ENDPOINT_URL: http://minio:9000
+    depends_on:
+      redis:
+        condition: service_healthy
+      api:
+        condition: service_started
+    # Module:variable form — the Celery instance is named `celery_app`.
+    command: celery -A app.workers.celery_app:celery_app worker --loglevel=info
+
+  nginx:
+    build:
+      context: ./frontend
+      args:
+        API_BASE_URL: /api/v1
+    depends_on:
+      - api
+    ports:
+      - "${WEB_PORT:-8080}:80"
+
+volumes:
+  pgdata:
+  miniodata:

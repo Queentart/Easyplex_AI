@@ -1,0 +1,47 @@
+# ── Secrets / env ────────────────────────────────────────────────────────────
+.env
+.env.*
+!.env.example
+!.env.prod.example
+# Local dev defaults only (localhost dummy values) — needed by run.bat
+!backend/.env.dev
+
+# ── Python / backend ─────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# ── Flutter / frontend ───────────────────────────────────────────────────────
+frontend/.dart_tool/
+frontend/build/
+frontend/.flutter-plugins
+frontend/.flutter-plugins-dependencies
+*.iml
+
+# ── Docker / data volumes ────────────────────────────────────────────────────
+# (named volumes live in Docker, not the tree — nothing to ignore here, but
+#  keep local dumps/exports out)
+*.dump
+*.sqlite3
+
+# ── OS / editor ──────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.log
+
+# ── Public-repo scope: code only (exclude internal/client materials) ─────────
+# These stay local / in a private repo, not in the public Easyplex_AI repo.
+docs/
+sources/
+mockup/
+_workspace/
+.claude/
+PLAN.md
+CLAUDE.md

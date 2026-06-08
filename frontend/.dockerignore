@@ -1,0 +1,16 @@
+# Keep the build context small. NOTE: build/web is intentionally NOT ignored —
+# the Dockerfile copies the host-built bundle from there.
+.dart_tool/
+.idea/
+.vscode/
+.git/
+*.iml
+*.log
+.flutter-plugins
+.flutter-plugins-dependencies
+android/
+ios/
+macos/
+linux/
+windows/
+test/
