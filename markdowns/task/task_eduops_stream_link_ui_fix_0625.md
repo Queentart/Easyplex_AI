@@ -1,0 +1,4 @@
+- [x] Create `streamLinkService.ts` to manage Today's Stream link data in `localStorage`.
+- [x] Update `instructor/ClassStreams.tsx` to fetch stream data from `streamLinkService` instead of hardcoding.
+- [x] Redesign `eduops/ClassStreams.tsx` to match the instructor's button-centric UI (Zoom/Youtube/Vimeo).
+- [x] Connect `eduops/ClassStreams.tsx` to `streamLinkService` for real-time data sync.

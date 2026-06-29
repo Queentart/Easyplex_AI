@@ -1,0 +1,7 @@
+- [x] Update `MyPage.tsx` to completely replace the `ops` case rendering block.
+- [x] Implement Hero Profile Banner with gradient and avatar.
+- [x] Implement Daily Quick KPIs widgets (Mismatches, Inquiries, Warning Students).
+- [x] Implement Actionable Task List (To-Do & Alerts).
+- [x] Implement Recent Activity Log timeline.
+- [x] Ensure click actions route correctly to related EduOps pages (`/eduops/sync`, `/eduops/ai`, etc.).
+- [x] Create `walkthrough.md` summarizing the changes.

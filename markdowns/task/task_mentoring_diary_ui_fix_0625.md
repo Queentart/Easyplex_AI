@@ -1,0 +1,6 @@
+- [x] Create `mentoringLogService.ts` to manage Mentoring Log data in `localStorage`.
+- [x] Refactor `MentoringLogs.tsx` to use the tabbed layout (Write / History) like TrainingLogs.
+- [x] Implement the weekly Mentoring Log form (Excel-like UI) with dynamic rows and tag selection.
+- [x] Connect the submit handler to `mentoringLogService.saveLog`.
+- [x] Update `InstructorLogs.tsx` on the EduOps side to fetch from `mentoringLogService` for the Mentoring Logs tab.
+- [x] Build the detailed accordion view in `InstructorLogs.tsx` to display the weekly mentoring logs and tags.

@@ -1,1 +1,7 @@
-# 일일 점검 및 태스크 관리
+from fastapi import APIRouter
+
+router = APIRouter()
+
+@router.get("/")
+async def get_daily_ops():
+    return {"message": "Daily operations data placeholder"}

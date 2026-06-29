@@ -1,30 +1,91 @@
 services:
   # DB 설정
   db:
-    image: pgvector/pgvector:pg17
+    image: pgvector/pgvector:pg18
     container_name: postgres_db
     restart: always
     environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: "1234"
+      POSTGRES_DB: easyplex_db
     ports:
       - "5432:5432"
     volumes:
-      - ./pgdata:/var/lib/postgresql/data
+      - ./pgdata:/var/lib/postgresql
+    # 👇 헬스체크 추가: DB가 완전히 준비되었는지 검사
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d easyplex_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # Redis 설정
+  redis:
+    image: redis:alpine
+    container_name: redis_cache
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./redisdata:/data
 
   # 백엔드(FastAPI) 설정
   backend:
     build: 
-      context: ./backend
+      context: ./backend        # 👈 backend 폴더 진입
       dockerfile: Dockerfile
     container_name: fastapi_backend
     restart: always
+    env_file:
+      - .env
     environment:
-      DATABASE_URL: ${DATABASE_URL}
+      POSTGRES_SERVER: db
+      REDIS_HOST: redis
+      # OLLAMA_BASE_URL: http://ollama:11434  # 컨테이너 간 통신을 위해 호스트 주소 덮어쓰기 -> 호스트의 로컬 Ollama를 사용하므로 주석 처리
     ports:
       - "8000:8000"
+    # 👇 서버 시작 전 자동으로 DB 마이그레이션 적용 및 seed 데이터를 넣고 uvicorn을 실행하도록 설정
+    command: sh -c "alembic upgrade head && python scripts/seed_users.py && uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload"
+    # 👇 DB가 완전히 준비(healthy)된 후 백엔드가 뜨도록 수정
     depends_on:
-      - db
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+      # ollama:
+      #   condition: service_started
     volumes:
-      - ./backend:/app
+      - ./backend:/app         # 👈 [수정] 컨테이너 내부 WORKDIR인 /app과 다이렉트로 동기화
+
+  # Ollama 설정 (로컬 LLM) - 호스트에서 네이티브하게 실행 중이므로 도커 버전은 주석 처리합니다.
+  # ollama:
+  #   image: ollama/ollama:latest
+  #   container_name: ollama
+  #   restart: always
+  #   ports:
+  #     - "11434:11434"
+  #   volumes:
+  #     - ./ollama_data:/root/.ollama
+  #   # GPU를 사용할 경우 아래 주석을 해제하여 사용하세요 (NVIDIA Docker 툴킷 필요)
+  #   # deploy:
+  #   #   resources:
+  #   #     reservations:
+  #   #       devices:
+  #   #         - driver: nvidia
+  #   #           count: 1
+  #   #           capabilities: [gpu]
+
+  # 프론트엔드(React + Vite) 설정
+  frontend:
+    build:
+      context: ./frontend       # 👈 frontend 폴더 진입
+      dockerfile: Dockerfile
+    container_name: react_frontend
+    restart: always
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    volumes:
+      - ./frontend:/app         # 👈 [추가] 개발 중 프론트 소스 수정 시 실시간 반영(HMR)용 볼륨
+      - /app/node_modules       # 👈 [추가] 호스트의 node_modules가 컨테이너 내부를 덮어쓰지 않도록 방지

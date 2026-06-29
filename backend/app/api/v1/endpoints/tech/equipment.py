@@ -1,1 +1,7 @@
-# 장비 대여/반납, 유지보수 로그
+from fastapi import APIRouter
+
+router = APIRouter()
+
+@router.get("/")
+async def get_equipment():
+    return {"message": "Equipment management data placeholder"}

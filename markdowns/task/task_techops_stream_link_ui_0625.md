@@ -1,0 +1,6 @@
+- [x] Update `techops/StreamMgmt.tsx` to allow input for Zoom, YouTube, and Vimeo links, and save via `streamLinkService`.
+- [x] Update `student/Home.tsx` to dynamically fetch links from `streamLinkService` and add a Vimeo button.
+- [x] Create `executive/ClassStreams.tsx` for the Owner to view the active streams.
+- [x] Update `data/executive.ts` to add the Class Streams menu item.
+- [x] Update `App.tsx` to route `/executive/streams` to `ExecutiveClassStreams`.
+- [x] Create `walkthrough.md` to summarize the changes.

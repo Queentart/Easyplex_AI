@@ -1,0 +1,265 @@
+/* ==========================================================
+ * Sidebar 컴포넌트 스타일
+ * ----------------------------------------------------------
+ * 데스크톱 레이아웃의 왼쪽 사이드바 네비게이션 스타일
+ * ========================================================== */
+
+.sidebar {
+  width: var(--sidebar-width);
+  min-height: 100vh;
+  background: var(--color-sidebar-bg);
+  color: var(--color-sidebar-text);
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 100;
+  transition: width var(--transition-slow);
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* ── 로고 & 브랜드 영역 ── */
+.sidebar__brand {
+  padding: var(--space-5) var(--space-5);
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  border-bottom: 1px solid var(--color-sidebar-divider);
+}
+
+.sidebar__brand-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-lg);
+  background: var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-inverse);
+  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-md);
+  flex-shrink: 0;
+}
+
+.sidebar__brand-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar__brand-title {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-sidebar-text-active);
+}
+
+.sidebar__brand-subtitle {
+  font-size: var(--font-size-xs);
+  color: var(--color-sidebar-text);
+  opacity: 0.7;
+}
+
+/* ── 네비게이션 메뉴 ── */
+.sidebar__nav {
+  flex: 1;
+  padding: var(--space-3) var(--space-3);
+}
+
+.sidebar__menu-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-3);
+  border-radius: var(--radius-md);
+  color: var(--color-sidebar-text);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  text-decoration: none;
+  margin-bottom: var(--space-1);
+}
+
+.sidebar__menu-item:hover {
+  background: var(--color-sidebar-hover);
+  color: var(--color-sidebar-text-active);
+}
+
+.sidebar__menu-item--active {
+  background: var(--color-primary);
+  color: var(--color-text-inverse);
+}
+
+.sidebar__menu-item--active:hover {
+  background: var(--color-primary-dark);
+}
+
+.sidebar__menu-icon {
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.sidebar__menu-label {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sidebar__menu-badge {
+  margin-left: auto;
+  background: var(--color-danger);
+  color: var(--color-text-inverse);
+  font-size: var(--font-size-xs);
+  padding: 1px 6px;
+  border-radius: var(--radius-full);
+  min-width: 18px;
+  text-align: center;
+}
+
+/* ── 액션 버튼 ── */
+.sidebar__action {
+  margin: var(--space-3);
+}
+
+.sidebar__action-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-primary);
+  color: var(--color-text-inverse);
+  border-radius: var(--radius-md);
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-base);
+  cursor: pointer;
+  transition: background var(--transition-fast);
+  border: none;
+}
+
+.sidebar__action-btn:hover {
+  background: var(--color-primary-dark);
+}
+
+.sidebar__action-btn--outline {
+  background: transparent;
+  border: 1px solid var(--color-sidebar-divider);
+  color: var(--color-sidebar-text-active);
+}
+
+.sidebar__action-btn--outline:hover {
+  background: var(--color-sidebar-hover);
+}
+
+/* ── 하단 프로필 / 푸터 ── */
+.sidebar__footer {
+  padding: var(--space-3);
+  border-top: 1px solid var(--color-sidebar-divider);
+}
+
+.sidebar__profile {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  border-radius: var(--radius-md);
+}
+
+.sidebar__profile-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-full);
+  background: var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-inverse);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  flex-shrink: 0;
+}
+
+.sidebar__profile-info {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.sidebar__profile-name {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-sidebar-text-active);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sidebar__profile-role {
+  font-size: var(--font-size-xs);
+  color: var(--color-sidebar-text);
+  opacity: 0.7;
+}
+
+.sidebar__footer-links {
+  display: flex;
+  gap: var(--space-4);
+  padding: var(--space-2) var(--space-3);
+}
+
+.sidebar__footer-link {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: var(--font-size-sm);
+  color: var(--color-sidebar-text);
+  cursor: pointer;
+  transition: color var(--transition-fast);
+}
+
+.sidebar__footer-link:hover {
+  color: var(--color-sidebar-text-active);
+}
+
+/* ── 채팅 이력 섹션 (Instructor 전용) ── */
+.sidebar__chat-history {
+  padding: var(--space-2) var(--space-3);
+}
+
+.sidebar__chat-history-title {
+  font-size: var(--font-size-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--color-sidebar-text);
+  opacity: 0.6;
+  padding: var(--space-2) var(--space-3);
+  margin-bottom: var(--space-1);
+}
+
+.sidebar__chat-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-sm);
+  color: var(--color-sidebar-text);
+  cursor: pointer;
+  transition: background var(--transition-fast);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sidebar__chat-item:hover {
+  background: var(--color-sidebar-hover);
+  color: var(--color-sidebar-text-active);
+}
+
+/* ── 섹션 구분자 ── */
+.sidebar__divider {
+  height: 1px;
+  background: var(--color-sidebar-divider);
+  margin: var(--space-2) var(--space-3);
+}
