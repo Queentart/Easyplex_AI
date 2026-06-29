@@ -1,0 +1,151 @@
+/* ==========================================================
+ * CSS Design Tokens (디자인 토큰)
+ * ----------------------------------------------------------
+ * 모든 색상, 타이포그래피, 스페이싱, 그림자, 라운드 등
+ * 디자인 시스템의 기본 변수를 정의합니다.
+ * ========================================================== */
+
+:root {
+  /* ── 기본 색상 팔레트 ── */
+  --color-primary: #0D9488;          /* Teal - 주요 액센트 */
+  --color-primary-light: #14B8A6;    /* Teal Light - 호버 */
+  --color-primary-dark: #0F766E;     /* Teal Dark - 클릭/활성 */
+  --color-primary-bg: rgba(13, 148, 136, 0.08);  /* Teal 배경 */
+  --color-primary-bg-hover: rgba(13, 148, 136, 0.12);
+
+  /* ── 시맨틱 색상 ── */
+  --color-success: #16A34A;          /* 성공/안전 */
+  --color-success-bg: rgba(22, 163, 74, 0.1);
+  --color-warning: #F59E0B;          /* 경고 */
+  --color-warning-bg: rgba(245, 158, 11, 0.1);
+  --color-danger: #EF4444;           /* 위험/에러 */
+  --color-danger-bg: rgba(239, 68, 68, 0.1);
+  --color-info: #3B82F6;            /* 정보 */
+  --color-info-bg: rgba(59, 130, 246, 0.1);
+
+  /* ── 인디고/퍼플 (보조 액센트) ── */
+  --color-indigo: #4F46E5;
+  --color-indigo-bg: rgba(79, 70, 229, 0.1);
+  --color-purple: #9333EA;
+  --color-purple-bg: rgba(147, 51, 234, 0.1);
+  --color-orange: #EA580C;
+  --color-orange-bg: rgba(234, 88, 12, 0.1);
+
+  /* ── 배경 색상 ── */
+  --color-bg: #F8F5F0;               /* 크림색 메인 배경 */
+  --color-bg-pure: #FFFFFF;           /* 순수 흰색 */
+  --color-bg-card: #FFFFFF;           /* 카드 배경 */
+  --color-bg-secondary: #F1F5F9;      /* 보조 배경 */
+  --color-bg-tertiary: #E2E8F0;       /* 3차 배경 */
+  --color-bg-overlay: rgba(0, 0, 0, 0.5); /* 오버레이 */
+
+  /* ── 사이드바 색상 (다크) ── */
+  --color-sidebar-bg: #1E293B;
+  --color-sidebar-text: #94A3B8;
+  --color-sidebar-text-active: #FFFFFF;
+  --color-sidebar-hover: rgba(255, 255, 255, 0.08);
+  --color-sidebar-active: rgba(13, 148, 136, 0.2);
+  --color-sidebar-divider: rgba(255, 255, 255, 0.08);
+
+  /* ── 텍스트 색상 ── */
+  --color-text: #1E293B;              /* 기본 텍스트 */
+  --color-text-secondary: #64748B;    /* 보조 텍스트 */
+  --color-text-tertiary: #94A3B8;     /* 3차 텍스트 */
+  --color-text-inverse: #FFFFFF;      /* 반전 텍스트 */
+  --color-text-link: #0D9488;         /* 링크 */
+
+  /* ── 보더 색상 ── */
+  --color-border: #E2E8F0;
+  --color-border-light: #F1F5F9;
+  --color-border-focus: #0D9488;
+
+  /* ── 타이포그래피 ── */
+  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-size-xs: 0.6875rem;   /* 11px */
+  --font-size-sm: 0.75rem;     /* 12px */
+  --font-size-base: 0.875rem;  /* 14px */
+  --font-size-md: 1rem;        /* 16px */
+  --font-size-lg: 1.125rem;    /* 18px */
+  --font-size-xl: 1.25rem;     /* 20px */
+  --font-size-2xl: 1.5rem;     /* 24px */
+  --font-size-3xl: 1.875rem;   /* 30px */
+  --font-size-4xl: 2.25rem;    /* 36px */
+
+  --font-weight-light: 300;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-weight-extrabold: 800;
+
+  --line-height-tight: 1.25;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.75;
+
+  /* ── 스페이싱 ── */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+
+  /* ── 라운드 ── */
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-2xl: 20px;
+  --radius-full: 9999px;
+
+  /* ── 그림자 ── */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.05);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+
+  /* ── 전환 ── */
+  --transition-fast: 150ms ease;
+  --transition-base: 200ms ease;
+  --transition-slow: 300ms ease;
+
+  /* ── 레이아웃 ── */
+  --sidebar-width: 260px;
+  --sidebar-collapsed-width: 68px;
+  --header-height: 60px;
+  --bottom-nav-height: 60px;
+}
+
+/* ==========================================================
+ * 다크 모드 오버라이드
+ * ========================================================== */
+:root.dark {
+  /* 배경 색상 (다크) */
+  --color-bg: #0F172A;
+  --color-bg-pure: #1E293B;
+  --color-bg-card: #1E293B;
+  --color-bg-secondary: #334155;
+  --color-bg-tertiary: #475569;
+  --color-bg-overlay: rgba(0, 0, 0, 0.75);
+
+  /* 텍스트 색상 (다크) */
+  --color-text: #F8FAFC;
+  --color-text-secondary: #CBD5E1;
+  --color-text-tertiary: #94A3B8;
+  --color-text-inverse: #0F172A;
+  --color-text-link: #2DD4BF;
+
+  /* 보더 색상 (다크) */
+  --color-border: #334155;
+  --color-border-light: #1E293B;
+  --color-border-focus: #2DD4BF;
+  
+  /* Primary 색상 다크 모드 최적화 */
+  --color-primary: #14B8A6;
+  --color-primary-light: #2DD4BF;
+  --color-primary-dark: #0D9488;
+}

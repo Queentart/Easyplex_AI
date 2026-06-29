@@ -1,0 +1,6 @@
+- [x] Update `DataSync.tsx` to add Excel/CSV file dropzones.
+- [x] Implement local mock algorithm in `DataSync.tsx` to parse simulated uploads and display mismatch table.
+- [x] Update `AIAutomation.tsx` to add "Generate Draft" button for FAQs.
+- [x] Update `AIAutomation.tsx` to add "Personalize Warning" button for the Warning System.
+- [x] Simulate LLM calls in `AIAutomation.tsx` showing the `extra_body: { "keep_alive": 0 }` parameter.
+- [ ] Create `walkthrough.md` to summarize the changes.

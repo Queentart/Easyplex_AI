@@ -1,0 +1,6 @@
+- [x] Define precise TypeScript interfaces reflecting the new Excel-like schema (`TrainingLogData`, `ClassPeriod`).
+- [x] Remove legacy `auth-form` classes to fix the white-on-white text visibility bug.
+- [x] Implement the new Daily Training Log form (Course Info, Attendance Stats, 8-period Schedule, Special Notes).
+- [x] Refactor the past logs view to group entries by Month (e.g., '2026년 6월').
+- [x] Implement an accordion or expandable view for past logs so instructors can see the full daily log details without taking up too much vertical space.
+- [x] Verify the UI renders correctly and gracefully handles state changes.

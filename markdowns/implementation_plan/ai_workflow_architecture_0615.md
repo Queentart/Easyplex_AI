@@ -1,0 +1,92 @@
+```plantuml
+@startuml
+!theme plain
+skinparam componentStyle rectangle
+skinparam backgroundColor #ffffff
+skinparam DefaultFontName "Malgun Gothic"
+
+title EasyPlex AI - Multi-Agent LLM Workflow Architecture (LangGraph + RAG)
+
+' 사용자 역할 정의 (Actors)
+actor "학생 (Student)" as student #lightblue
+actor "강사진 (Instructor)" as instructor #lightgreen
+actor "운영팀 (EduOps)" as eduops #orange
+actor "오너/원장 (Owner)" as owner #gold
+
+' 설정 및 인프라
+node ".env Configuration" as env #lightyellow {
+  label "OLLAMA_MODEL_NAME=qwen2.5:latest"
+}
+
+' 데이터베이스 (Docker Containers)
+package "Data Layer (Docker Containers)" {
+  database "PostgreSQL\n(+ pgvector)" as pgvector #lightblue {
+    label "RAG Vector Store\n(Knowledge Base, Documents)"
+  }
+  database "Redis" as redis #ffcccc {
+    label "Semantic Cache\n(자주 묻는 질문/답변 메모리)"
+  }
+}
+
+' 백엔드 계층 (LangGraph Multi-Agent)
+package "Backend (FastAPI + LangChain)" {
+  
+  component "API Gateway & Router" as api_router
+  
+  package "LangGraph Orchestrator" {
+    component "Supervisor Agent\n(의도 파악 및 라우팅)" as supervisor #lightcyan
+    
+    component "Q&A Agent\n(RAG 기반 질의응답)" as qna_agent #lightcyan
+    component "Grading/Eval Agent\n(과제 채점 및 평가)" as grading_agent #lightcyan
+    component "Strategy Agent\n(데이터 기반 커리큘럼 최적화)" as strategy_agent #lightcyan
+    component "Admin Agent\n(행정/데이터 자동화)" as admin_agent #lightcyan
+  }
+}
+
+' 로컬 LLM 서버 계층
+package "Local AI Server" {
+  component "Ollama Inference Server" as Ollama #pink {
+    label "LLM 구동 (VRAM 8GB)\n**[ extra_body: { keep_alive: 0 } ]**\n(작업 완료 즉시 VRAM 언로드)"
+  }
+}
+
+' 사용자 -> 프론트엔드/API 인터랙션
+student -down-> api_router : "질의 (AI Help Bot)"
+instructor -down-> api_router : "채점 및 코파일럿 요청"
+eduops -down-> api_router : "행정 데이터 요약 요청"
+owner -down-> api_router : "전략 제안 요청"
+
+' API -> LangGraph 오케스트레이터
+api_router -down-> supervisor : "Task 전달"
+
+' 캐시 확인 로직
+supervisor -left-> redis : "1. Cache Hit 확인"
+redis ..> supervisor : "Cache 존재 시 즉시 반환"
+
+' Supervisor -> Agents (Cache Miss 시)
+supervisor -down-> qna_agent : "학습/FAQ 질의"
+supervisor -down-> grading_agent : "채점/평가 업무"
+supervisor -down-> strategy_agent : "통계 분석/제안"
+supervisor -down-> admin_agent : "행정/요약 업무"
+
+' Agents -> RAG / VectorDB 검색
+qna_agent -left-> pgvector : "2. 유사 문서/컨텍스트 검색 (RAG)"
+strategy_agent -left-> pgvector : "과거 데이터 검색"
+
+' Agents -> Ollama LLM 추론
+qna_agent -down-> Ollama : "Inference Request"
+grading_agent -down-> Ollama : "Inference Request"
+strategy_agent -down-> Ollama : "Inference Request"
+admin_agent -down-> Ollama : "Inference Request"
+
+' 설정 주입
+env .right.> Ollama : "모델 이름 주입"
+
+note right of Ollama
+  각 Agent가 추론(Inference)을 요청할 때,
+  API 파라미터로 **"keep_alive": 0**을 전송하여
+  응답 완료 후 즉시 모델을 VRAM에서 메모리 해제시킵니다.
+end note
+
+@enduml
+```

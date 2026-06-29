@@ -1,0 +1,6 @@
+- [x] Create `trainingLogService.ts` in the frontend API layer for managing `localStorage` data for Training Logs.
+- [x] Connect `TrainingLogs.tsx` (Instructor side) to `trainingLogService` to load and save real `localStorage` data instead of dummy arrays.
+- [x] Implement the submit handler in `TrainingLogs.tsx` to capture the complex form data and pass it to the service.
+- [x] Modify `InstructorLogs.tsx` (EduOps side) to fetch from `trainingLogService`.
+- [x] Enhance EduOps UI to render a detailed Modal or Accordion view of the training logs, showing the rich attendance and schedule data.
+- [x] Test the integration by submitting a log as an instructor and viewing it as EduOps.

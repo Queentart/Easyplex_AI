@@ -1,2 +1,43 @@
-venv/
+# Environment variables
 .env
+.env.*
+
+# Python Virtual Environments
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Node.js
+node_modules/
+dist/
+build/
+npm-debug.log
+yarn-error.log
+
+# Docker & Database Data Volumes
+pgdata/
+pgdata_old/
+redisdata/
+ollama_data/
+
+# Logs and outputs
+out/
+*.log
+backend.log
+
+# IDEs and Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS Generated
+.DS_Store
+Thumbs.db
+
+# Project specific caches or temp files
+__pycache__/
+*.pyc
+.pytest_cache/
+.coverage
